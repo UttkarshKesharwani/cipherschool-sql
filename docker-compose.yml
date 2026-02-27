@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ciphersql
+    volumes:
+      - ciphersql_data:/var/lib/postgresql/18/docker
+    ports:
+      - "5432:5432"
+    networks:
+      - pgnet
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    
+  dashboard:
+    image: dpage/pgadmin4
+    container_name: postgres-dashboard
+    ports:
+      - "80:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - pgnet
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+volumes:
+  ciphersql_data:
+
+networks:
+  pgnet:
+    driver: bridge
+
+
+ 
+
+
+# docker exec -it postgres psql -U postgres -d ciphersql
