@@ -5,12 +5,6 @@
     --bg-color: #0f0f1a;
     --accent-color: #e94560;
 
-    /* Breakpoints for mobile-first design reference
-     small: 320px 
-     medium: 641px 
-     large: 1024px 
-     xlarge: 1281px 
-  */
 }
 
 * {
@@ -21,7 +15,6 @@
 
 body {
     font-family: 'Inter', 'Roboto', sans-serif;
-    /* background-color: var(--bg-color); */
     color: var(--text-color);
     line-height: 1.6;
 }

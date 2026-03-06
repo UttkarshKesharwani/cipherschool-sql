@@ -22,7 +22,6 @@ export async function connectToPostgreSQL() {
             console.log("🐘 New PostgreSQL connection client created");
         });
 
-        // Let's force a query to ensure the pool connects properly on boot up.
         // pool.query() automatically checks out a client and releases it back.
         const res = await pool.query('SELECT NOW()');
         // console.log(res)

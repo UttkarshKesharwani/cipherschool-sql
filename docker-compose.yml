@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres
-    container_name: postgres
+    container_name: postgres-local
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: ciphersql
@@ -19,7 +19,7 @@ services:
     
   dashboard:
     image: dpage/pgadmin4
-    container_name: postgres-dashboard
+    container_name: postgres-dashboard-local
     ports:
       - "80:80"
     environment:

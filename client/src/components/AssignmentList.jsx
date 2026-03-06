@@ -16,6 +16,10 @@ function AssignmentList() {
         return <div className="error-state">Error: {error.message}</div>;
     }
 
+    if(assignments.length === 0) {
+        return <div className="no-assignments-state">No assignments available.</div>;
+    }
+
     return (
         <div className="assignment-list-container">
             <h2>Problem Set</h2>

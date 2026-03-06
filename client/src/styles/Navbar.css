@@ -122,7 +122,7 @@
 
 .profile-name {
     font-weight: 600;
-    color: white; /* Made profile initial white for better contrast */
+    color: white; 
     font-size: 0.9rem;
     background-color: #f3912e;
     height: 36px;

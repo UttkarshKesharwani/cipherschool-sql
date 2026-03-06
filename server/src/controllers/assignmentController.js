@@ -40,7 +40,6 @@ export const runQuery = async (req, res, next) => {
     const { referenceQuery, expectedOutput, sampleTables } = await Assignment.findById(assignmentId)
 
     try {
-        // leans will convert into js object 
 
         const sqlQueries = generateSqlQueries(sampleTables);
 
@@ -59,7 +58,7 @@ export const runQuery = async (req, res, next) => {
             }
 
 
-            // --- FILTER MALICIOUS QUERIES USING A READ-ONLY USER ---
+            // Creating read-only user  
             // 1. Create a temporary role that cannot login
             await pool.query(`CREATE ROLE ${readonlyRole} NOLOGIN`);
             // 2. Grant only USAGE permission on our new schema
@@ -78,25 +77,20 @@ export const runQuery = async (req, res, next) => {
             // Reset back to our superuser immediately after the safe execution
             await pool.query(`RESET ROLE`);
 
-            // Compare user result with referenceQueryResult rows securely
             const correct = normalizeResult(userQueryResult.rows, refQueryResult.rows);
 
-            // Send back the proper JSON structure that MonnacoEditor expects
             return res.status(200).json({
                 sampleTables,
                 expectedOutput,
-                userRes: userQueryResult, // Frontend reads result.userRes.rows for display
+                userRes: userQueryResult, 
                 correct: correct
             });
 
         } catch (error) {
-            // Even if it errors, we need to ensure we reset role back!
             await pool.query(`RESET ROLE`);
 
-            // Return error structurally back to frontend instead of crashing 500
             res.status(400).json({ error: error.message || "Invalid SQL syntax or relationship error." });
         } finally {
-            // Clean up: Reset configurations and remove sandbox info
             await pool.query(`DROP SCHEMA IF EXISTS ${schema} CASCADE`);
             await pool.query(`DROP ROLE IF EXISTS ${readonlyRole}`);
             await pool.query(`RESET search_path;`);
